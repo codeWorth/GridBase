@@ -1,4 +1,4 @@
-package Utitlity.Inlets;
+package Inlets;
 
 import MasslessObjects.Wood;
 import Utitlity.Outlet;

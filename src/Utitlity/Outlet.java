@@ -1,9 +1,9 @@
 package Utitlity;
 
-import Utitlity.Inlets.Inlet;
+import Inlets.Inlet;
 
 public interface Outlet {	
 	public void outputToAll();
-	public void addInlet(Inlet in);
-	public void removeInlet(Inlet in);
+	public void addOutlet(Inlet out);
+	public void removeOutlet(Inlet out);
 }

@@ -1,4 +1,4 @@
-package Utitlity.Inlets;
+package Inlets;
 
 import MasslessObjects.MasslessObject;
 import Utitlity.Outlet;
@@ -7,15 +7,16 @@ public abstract class Inlet {
 	public static int MAX_ID = 1;
 	
 	private MasslessObject store;
-	private Outlet owner;
+	private Outlet input;
 	
 	private int id = Inlet.MAX_ID++;
 	
-	public Inlet(Outlet _owner){
-		owner = _owner;
+	public Inlet(Outlet _input){
+		input = _input;
 	}
-	
+
 	public abstract MasslessObject removeStore();
+	
 	public void addToStore(MasslessObject inputObj){
 		if (inputObj.getClass().equals(this.getClass())){
 			this.store.add(inputObj);
@@ -23,7 +24,7 @@ public abstract class Inlet {
 	}
 	
 	public void removeThis(){
-		owner.removeInlet(this);
+		input.removeOutlet(this);
 	}
 	
 	@Override

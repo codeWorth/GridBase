@@ -37,4 +37,5 @@ public abstract class MassObject {
 	}
 	
 	public abstract void update();
+	public abstract double print();
 }

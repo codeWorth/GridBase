@@ -2,16 +2,16 @@ package MassObjects;
 
 import java.util.ArrayList;
 
-import Inlets.ElectricityInlet;
+import Inlets.E;
 import Inlets.Inlet;
 import MasslessObjects.Electricity;
 import Utitlity.Connection;
 
-public class Wire extends MassObject implements Connection {
+public class Wire<E extends E> extends MassObject implements Connection<E> {
 	public static double efficiency = 0.8;
 	
-	private ElectricityInlet inlet;
-	private ArrayList<ElectricityInlet> outlets = new ArrayList<ElectricityInlet>();
+	private E inlet;
+	private ArrayList<E> outlets = new ArrayList<E>();
 	
 	private Electricity power = new Electricity(0);
 	
@@ -27,16 +27,16 @@ public class Wire extends MassObject implements Connection {
 	
 	@Override
 	public void addOutlet(Inlet out) {
-		if (out instanceof ElectricityInlet){
-			ElectricityInlet outlet = (ElectricityInlet) out;
+		if (out instanceof E){
+			E outlet = (E) out;
 			outlets.add(outlet);
 		}
 	}
 
 	@Override
 	public void removeOutlet(Inlet out) {
-		if (out instanceof ElectricityInlet){
-			ElectricityInlet outlet = (ElectricityInlet) out;
+		if (out instanceof E){
+			E outlet = (E) out;
 			outlets.remove(outlet);
 		}
 	}
@@ -50,7 +50,7 @@ public class Wire extends MassObject implements Connection {
 		int outletsLength = outlets.size();
 		double amountPer = power.amount/outletsLength * Wire.efficiency * Electricity.efficiency;
 		
-		for (ElectricityInlet inlet : outlets){
+		for (E inlet : outlets){
 			inlet.addToStore(new Electricity(amountPer));
 		}
 	}
@@ -71,7 +71,7 @@ public class Wire extends MassObject implements Connection {
 	}
 
 	@Override
-	public void setInlet(ElectricityInlet _inlet){
+	public void setInlet(Inlet _inlet){
 		inlet = _inlet;
 	}
 	

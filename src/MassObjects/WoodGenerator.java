@@ -10,6 +10,8 @@ import MasslessObjects.Wood;
 import Utitlity.Outlet;
 
 public class WoodGenerator extends MassObject implements Outlet{	
+	FIXME
+	
 	private ArrayList<Inlet> inlets = new ArrayList<Inlet>();
 	private ArrayList<ElectricityInlet> outlets = new ArrayList<ElectricityInlet>();
 	private Wood fuel = new Wood();

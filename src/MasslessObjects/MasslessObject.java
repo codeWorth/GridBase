@@ -1,6 +1,6 @@
 package MasslessObjects;
 
-public class MasslessObject{
+public abstract class MasslessObject{
 	public double amount = 0;
 	
 	public boolean add(MasslessObject other){
@@ -12,10 +12,17 @@ public class MasslessObject{
 		}
 	}
 	
-	public MasslessObject(){
-	}
-	
 	public MasslessObject(double _amount){
 		amount = _amount;
+	}
+	
+	public MasslessObject empty(){
+		MasslessObject temp = (MasslessObject) this.clone();
+		this.amount = 0;
+		return temp;
+	}
+	
+	public MasslessObject clone(){
+		
 	}
 }

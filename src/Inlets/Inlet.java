@@ -3,21 +3,24 @@ package Inlets;
 import MasslessObjects.MasslessObject;
 import Utitlity.Outlet;
 
-public abstract class Inlet {
+public abstract class Inlet<E extends MasslessObject> {	
 	public static int MAX_ID = 1;
 	
-	private MasslessObject store;
+	private E store;
 	private Outlet input;
 	
 	private int id = Inlet.MAX_ID++;
-	
+
 	public Inlet(Outlet _input){
 		input = _input;
 	}
 
-	public abstract MasslessObject removeStore();
+	public E removeStore(){
+		E temp = (E) this.store.empty();
+		return temp;
+	}
 	
-	public void addToStore(MasslessObject inputObj){
+	public void addToStore(E inputObj){
 		if (inputObj.getClass().equals(this.getClass())){
 			this.store.add(inputObj);
 		}
@@ -37,7 +40,7 @@ public abstract class Inlet {
 	        return false;
 	    }
 	    
-	    Inlet otherInlet = (Inlet) obj;
+	    Inlet<?> otherInlet = (Inlet<?>) obj;
 	    if (this.id == otherInlet.id){
 	    	return true;
 	    }

@@ -1,11 +1,48 @@
 package Utitlity;
 
-import Inlets.Inlet;
+import java.util.ArrayList;
 
-public interface Connection<E extends Inlet> extends Outlet {
-	FIXME
+import MassObjects.MassObject;
+
+public abstract class Connection extends Outlet {	
+	public Connection(int _x, int _y, int _width, int _height) {
+		super(_x, _y, _width, _height);
+	}
+		
+	protected ArrayList<Inlet<?>> inlets = new ArrayList<Inlet<?>>();
 	
-	public void canTransfer();
-	public void setInlet(Inlet _inlet);
-	public void removeInlet();
+	protected abstract boolean handleAddInlet(Inlet<?> in);
+	protected abstract boolean shouldAddInlet();
+	protected abstract void intakeAll();
+	
+	public abstract boolean canTransferFrom(Outlet from);
+	
+	public abstract boolean linkTo(Outlet out);
+	public abstract boolean linkTo(Outlet out, Inlet<?> connector);
+	
+	@Override
+	public boolean remove(Inlet<?> inlet){
+		return (super.remove(inlet) || inlets.remove(inlet));
+	}
+	
+	public boolean addInlet(Inlet<?> in){
+		if (!shouldAddInlet()){
+			return false;
+		}
+		
+		boolean didAdd = in.addOwner(this);
+		if (!didAdd){
+			return false;
+		} else {
+			return handleAddInlet(in);
+		}
+	}
+	
+	@Override
+	public ArrayList<MassObject> update(){
+		intakeAll();
+		outputToAll();
+		
+		return allToPropagte();
+	}
 }

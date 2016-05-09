@@ -1,84 +1,101 @@
 package MassObjects;
 
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 
-import Inlets.E;
-import Inlets.Inlet;
 import MasslessObjects.Electricity;
 import Utitlity.Connection;
+import Utitlity.Inlet;
+import Utitlity.Outlet;
 
-public class Wire<E extends E> extends MassObject implements Connection<E> {
+public class Wire extends Connection {
 	public static double efficiency = 0.8;
 	
-	private E inlet;
-	private ArrayList<E> outlets = new ArrayList<E>();
-	
-	private Electricity power = new Electricity(0);
+	protected Electricity power = new Electricity(0);
 	
 	public Wire(int _x, int _y) {
 		super(_x, _y, 1, 1);
 	}
-
-	@Override
-	public void update() {
-		intakeAll();
-		outputToAll();
-	}
 	
-	@Override
-	public void addOutlet(Inlet out) {
-		if (out instanceof E){
-			E outlet = (E) out;
-			outlets.add(outlet);
-		}
+	public Wire(int _x, int _y, Inlet<Electricity> input, Inlet<Electricity> output){
+		super(_x, _y, 1, 1);
 	}
 
 	@Override
-	public void removeOutlet(Inlet out) {
-		if (out instanceof E){
-			E outlet = (E) out;
-			outlets.remove(outlet);
-		}
-	}
-	
-	private void intakeAll(){
-		power.add(inlet.removeStore());
-	}
-	
-	@Override
-	public void outputToAll() {		
-		int outletsLength = outlets.size();
-		double amountPer = power.amount/outletsLength * Wire.efficiency * Electricity.efficiency;
-		
-		for (E inlet : outlets){
-			inlet.addToStore(new Electricity(amountPer));
-		}
-	}
-
-	@Override
-	public double print() {
-		if (power.amount > 0){
-			return 2;
+	public boolean handleAddInlet(Inlet<?> in) {
+		if (in.type().equals(Electricity.class)){
+			inlets.add(in);
+			return true;
 		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean handleAddOutlet(Inlet<?> out) {
+		if (out.type().equals(Electricity.class)){
+			outlets.add(out);
+			return true;
+		} else {
+			return false;
+		}	
+	}
+
+	@Override
+	public void outputToAll() {
+		if (outlets.size() < 1){
+			return;
+		}
+		
+		Inlet<Electricity> out = (Inlet<Electricity>) outlets.get(0);
+		out.addToStore(power);
+		power.amount = 0;
+	}
+
+	@Override
+	protected void intakeAll() {
+		if (inlets.size() < 1){
+			return;
+		}
+		
+		Inlet<Electricity> in = (Inlet<Electricity>) inlets.get(0);
+		power.add(in.removeStore());
+	}
+
+	@Override
+	protected boolean shouldAddInlet() {
+		return (inlets.size() < 1);
+	}
+
+	@Override
+	protected boolean shouldAddOutlet() {
+		return (outlets.size() < 1);
+	}
+
+	@Override
+	public boolean canTransferFrom(Outlet from) {
+		return adjacentTo(from);
+	}
+	
+	@Override
+	public double print(){
+		if (power.amount > 0){
 			return 1;
 		}
+		return 0;
 	}
 
 	@Override
-	public void canTransfer() {
-		// TODO Auto-generated method stub
+	public boolean linkTo(Outlet out) {
+		return linkTo(out, new Inlet<Electricity>(new Electricity(0)));
+	}
+
+	@Override
+	public boolean linkTo(Outlet out, Inlet<?> connector) {
+		if (!connector.type().equals(Electricity.class)){
+			return false;
+		}		
 		
-	}
-
-	@Override
-	public void setInlet(Inlet _inlet){
-		inlet = _inlet;
-	}
-	
-	@Override
-	public void removeInlet() {
-		this.inlet.removeThis();
-		this.inlet = null;
+		return this.addInlet(connector) && out.addOutlet(connector);
 	}
 
 }

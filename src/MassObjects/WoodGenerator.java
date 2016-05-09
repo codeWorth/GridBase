@@ -1,44 +1,26 @@
 package MassObjects;
 
-import java.util.ArrayList;
-
-import Inlets.ElectricityInlet;
-import Inlets.Inlet;
-import Inlets.WoodInlet;
 import MasslessObjects.Electricity;
 import MasslessObjects.Wood;
+import Utitlity.Connection;
+import Utitlity.Inlet;
 import Utitlity.Outlet;
 
-public class WoodGenerator extends MassObject implements Outlet{	
-	FIXME
+public class WoodGenerator extends Connection{		
+	private Wood fuel = new Wood(0);
 	
-	private ArrayList<Inlet> inlets = new ArrayList<Inlet>();
-	private ArrayList<ElectricityInlet> outlets = new ArrayList<ElectricityInlet>();
-	private Wood fuel = new Wood();
-	
-	public WoodGenerator(int _x, int _y, int _width, int _height){
-		super(_x, _y, _width, _height);
-	}
-
-	public void update() {
-		intakeAll();
-		outputToAll();
+	public WoodGenerator(int _x, int _y){
+		super(_x, _y, 2, 2);
 	}
 	
-	private void intakeAll(){
-		for (Inlet inlet : inlets){
-			if (inlet instanceof WoodInlet){
-				fuel.add(inlet.removeStore());
+	@Override
+	protected void intakeAll(){
+		for (Inlet<?> inlet : inlets){
+			if (inlet.type().equals(Wood.class)){
+				Inlet<Wood> thisInlet = (Inlet<Wood>) inlet;
+				fuel.add(thisInlet.removeStore());
 			}
 		}
-	}
-
-	public void addInlet(Inlet in) {
-		inlets.add(in);
-	}
-
-	public void removeInlet(Inlet in) {
-		inlets.remove(in);
 	}
 	
 	@Override
@@ -47,30 +29,64 @@ public class WoodGenerator extends MassObject implements Outlet{
 		int outletsLength = outlets.size();
 		double amountPer = energyAmount/outletsLength;
 		
-		for (ElectricityInlet inlet : outlets){
-			inlet.addToStore(new Electricity(amountPer));
-		}
-	}
-	
-	@Override
-	public void addOutlet(Inlet out) {
-		if (out instanceof ElectricityInlet){
-			ElectricityInlet outlet = (ElectricityInlet) out;
-			outlets.add(outlet);
-		}
-	}
-
-	@Override
-	public void removeOutlet(Inlet out) {
-		if (out instanceof ElectricityInlet){
-			ElectricityInlet outlet = (ElectricityInlet) out;
-			outlets.remove(outlet);
+		for (Inlet<?> outlet : outlets){
+				Inlet<Electricity> thisOutlet = (Inlet<Electricity>) outlet;
+				thisOutlet.addToStore(new Electricity(amountPer));
 		}
 	}
 	
 	@Override
 	public double print(){
 		return 1;
+	}
+
+	@Override
+	public boolean handleAddInlet(Inlet<?> in) {
+		if (in.type().equals(Wood.class)){
+			inlets.add(in);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean handleAddOutlet(Inlet<?> out) {
+		if (out.type().equals(Electricity.class)){
+			outlets.add(out);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean shouldAddInlet() {
+		return true;
+	}
+
+	@Override
+	protected boolean shouldAddOutlet() {
+		return true;
+	}
+
+	@Override
+	public boolean canTransferFrom(Outlet from) {
+		return adjacentTo(from);
+	}
+
+	@Override
+	public boolean linkTo(Outlet out) {
+		return linkTo(out, new Inlet<Wood>(new Wood(0)));
+	}
+
+	@Override
+	public boolean linkTo(Outlet out, Inlet<?> connector) {
+		if (!connector.type().equals(Wood.class)){
+			return false;
+		}		
+		
+		return this.addInlet(connector) && out.addOutlet(connector);
 	}
 	 
 }

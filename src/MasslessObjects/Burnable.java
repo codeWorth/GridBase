@@ -7,11 +7,4 @@ public class Burnable extends MasslessObject{
 	public Burnable(double _amount){
 		super(_amount);
 	}
-	
-	@Override
-	public Burnable empty() {
-		Burnable temp = new Burnable(this.amount);
-		this.amount = 0;
-		return temp;
-	}
 }

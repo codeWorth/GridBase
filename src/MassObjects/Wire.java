@@ -47,8 +47,7 @@ public class Wire extends Connection {
 		}
 		
 		Inlet<Electricity> out = (Inlet<Electricity>) outlets.get(0);
-		out.addToStore(power);
-		power.amount = 0;
+		out.addToStore(power.empty());
 	}
 
 	@Override
@@ -77,11 +76,8 @@ public class Wire extends Connection {
 	}
 	
 	@Override
-	public double print(){
-		if (power.amount > 0){
-			return 1;
-		}
-		return 0;
+	public String print(){
+		return power.print();
 	}
 
 	@Override

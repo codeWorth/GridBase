@@ -4,13 +4,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class MasslessObject{
-	public double amount = 0;
+	protected double amount = 0;
 	protected final double maxTransfer = 3;
 	
 	public MasslessObject(double _amount){
 		amount = _amount;
 	}
-	
+		
 	public boolean add(MasslessObject other){
 		if (other.getClass().equals(this.getClass())){
 			this.amount += other.amount;
@@ -20,10 +20,14 @@ public abstract class MasslessObject{
 		}
 	}
 	
-	public MasslessObject empty(){
-		MasslessObject temp = this.clone();
+	public void add(double other){
+		this.amount += other;
+	}
+		
+	public double empty(){
+		double temp = this.amount;
 		if (this.amount > maxTransfer){
-			temp.amount = maxTransfer;
+			temp = maxTransfer;
 			this.amount -= maxTransfer;
 		} else {
 			this.amount = 0;
@@ -50,5 +54,9 @@ public abstract class MasslessObject{
 		}
 		
 		return myClone;
+	}
+	
+	public String print(){
+		return Double.toString(this.amount);
 	}
 }

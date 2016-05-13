@@ -30,8 +30,8 @@ public abstract class Store<E extends MasslessObject> extends Outlet {
 	}
 
 	@Override
-	public double print() {
-		return stored.amount;
+	public String print() {
+		return stored.print();
 	}
 
 	public abstract void add(E toAdd);

@@ -25,7 +25,7 @@ public class Main {
 		grid.addMassObject(wire3);
 		
 		grid.addMassObject(splitter1);
-		
+	
 		Lightbulb output1 = new Lightbulb(0,6);
 		Lightbulb output2 = new Lightbulb(1,6);
 		Lightbulb output3 = new Lightbulb(2,6);
@@ -53,7 +53,7 @@ public class Main {
 		
 		grid.print();
 		
-		for (int i = 0; i < 7; i++){
+		for (int i = 0; i < 20; i++){
 			grid.allObjectsUpdate();
 			
 			grid.print();

@@ -59,5 +59,5 @@ public abstract class MassObject {
 	 * @return A list of MassObjects which will be updated together next.
 	 */
 	public abstract ArrayList<MassObject> update();
-	public abstract double print();
+	public abstract String print();
 }

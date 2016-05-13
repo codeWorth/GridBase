@@ -25,19 +25,19 @@ public class WoodGenerator extends Connection{
 	
 	@Override
 	public void outputToAll() {
-		double energyAmount = fuel.amount * Wood.energyPerAmount;
+		double energyAmount = fuel.empty() * Wood.energyPerAmount;
 		int outletsLength = outlets.size();
 		double amountPer = energyAmount/outletsLength;
 		
 		for (Inlet<?> outlet : outlets){
 				Inlet<Electricity> thisOutlet = (Inlet<Electricity>) outlet;
-				thisOutlet.addToStore(new Electricity(amountPer));
+				thisOutlet.addToStore(amountPer);
 		}
 	}
 	
 	@Override
-	public double print(){
-		return 1;
+	public String print(){
+		return "1  ";
 	}
 
 	@Override

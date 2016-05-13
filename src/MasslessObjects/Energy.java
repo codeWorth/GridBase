@@ -1,7 +1,7 @@
 package MasslessObjects;
 
 public class Energy extends MasslessObject {
-	public static final double efficiency = 0.95;
+	public static final double efficiency = 1;
 	
 	public Energy(double _amount) {
 		super(_amount);
@@ -12,8 +12,8 @@ public class Energy extends MasslessObject {
 	}
 	
 	@Override
-	public Energy empty(){
+	public double empty(){
 		transmit();
-		return (Energy) super.empty();
+		return super.empty();
 	}
 }

@@ -40,8 +40,8 @@ public abstract class Connection extends Outlet {
 	
 	@Override
 	public ArrayList<MassObject> update(){
-		intakeAll();
 		outputToAll();
+		intakeAll();
 		
 		return allToPropagte();
 	}

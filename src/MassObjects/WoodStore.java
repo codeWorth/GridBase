@@ -12,13 +12,11 @@ public class WoodStore extends Store<Wood> {
 	@Override
 	public void outputToAll() {
 		int outletsLength = outlets.size();
-		double amountPer = stored.amount/outletsLength;
-		
-		stored.empty();
+		double amountPer = stored.empty()/outletsLength;
 		
 		for (Inlet<?> outlet : outlets){
 				Inlet<Wood> thisOutlet = (Inlet<Wood>) outlet;
-				thisOutlet.addToStore(new Wood(amountPer));
+				thisOutlet.addToStore(amountPer);
 		}
 	}
 

@@ -12,13 +12,11 @@ public class WireSplitter extends Wire {
 	@Override
 	public void outputToAll() {
 		int outletsLength = outlets.size();
-		double amountPer = power.amount/outletsLength;
-		
-		power.empty();
+		double amountPer = power.empty()/outletsLength;
 		
 		for (Inlet<?> outlet : outlets){
 				Inlet<Electricity> thisOutlet = (Inlet<Electricity>) outlet;
-				thisOutlet.addToStore(new Electricity(amountPer));
+				thisOutlet.addToStore(amountPer);
 		}
 	}
 	

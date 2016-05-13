@@ -84,7 +84,7 @@ public class Grid{
 	}
 	
 	public void print(){
-		double[][] map = map();
+		String[][] map = map();
 		
 		for (int i = 0; i < map.length; i++){
 			for (int j = 0; j < map[i].length; j++){
@@ -94,8 +94,14 @@ public class Grid{
 		}
 	}
 	
-	private double[][] map(){
-		double[][] map = new double[width()][height()];
+	private String[][] map(){
+		String[][] map = new String[width()][height()];
+		
+		for (int i = 0; i < map.length; i++){
+			for (int j = 0; j < map[i].length; j++){
+				map[i][j] = "E  ";
+			}
+		}
 		
 		System.out.println("Width: " + width());
 		System.out.println("Height: " + height());

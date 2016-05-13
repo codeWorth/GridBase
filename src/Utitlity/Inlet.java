@@ -19,13 +19,12 @@ public class Inlet<E extends MasslessObject> {
 		return owner1.canTransferFrom(owner2);
 	}
 
-	public E removeStore(){
-		E temp = (E) this.store.empty();
-		return temp;
+	public double removeStore(){
+		return this.store.empty();
 	}
 	
-	public void addToStore(E inputObj){
-		this.store.add(inputObj);
+	public void addToStore(double input){
+		this.store.add(input);
 	}
 	
 	public boolean removeThis(){

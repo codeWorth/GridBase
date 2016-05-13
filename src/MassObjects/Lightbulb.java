@@ -11,8 +11,8 @@ public class Lightbulb extends Wire {
 	}
 	
 	@Override
-	public double print(){
-		return power.amount;
+	public String print(){
+		return power.print();
 	}
 	
 	@Override
